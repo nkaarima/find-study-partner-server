@@ -42,6 +42,44 @@ async function run() {
         const db = client.db('study_partner_info');
 
         const studyPartnerCollection= db.collection('study_partners');
+
+        
+        //Retrieve all the study partners
+
+        app.get('/studyPartner',async(req,res) => {
+
+            const projectFields= {name:1, profileimage:1, subject:1, studyMode:1, experienceLevel:1};
+
+            const cursor= studyPartnerCollection.find().project(projectFields);
+
+            const result= await cursor.toArray();
+            res.send(result);
+        })
+
+        //Retrieve a single studyPartner
+
+        app.get('/studyPartner/:id', async(req,res) => {
+
+             const id= req.params.id;
+             const query = {id: id};
+             const result= await studyPartnerCollection.findOne(query);
+             res.send(result);
+        })
+        
+        
+        
+        //Create study partners
+
+        app.post('/studyPartner', async(req,res) => {
+
+            const newPartner= req.body;
+            const result = await studyPartnerCollection.insertOne(newPartner);
+            res.send(result);
+        })
+
+
+
+
         
         await client.db('admin').command({ping:1});
 
