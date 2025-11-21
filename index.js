@@ -58,6 +58,17 @@ async function run() {
             res.send(result);
         })
 
+         app.get('/top3',async(req,res) => {
+
+            const projectFields= {name:1, profileimage:1, subject:1, rating:1};
+
+            const cursor= studyPartnerCollection.find().project(projectFields).sort({rating: -1}).limit(3);
+
+            const result= await cursor.toArray();
+            res.send(result);
+        })
+
+
         //Retrieve a single studyPartner
 
         app.get('/studyPartner/:id', async(req,res) => {
@@ -137,10 +148,7 @@ async function run() {
 
         })
 
-
-
-
-        
+  
         await client.db('admin').command({ping:1});
 
          console.log("Pinged your deployment. You successfully connected to MongoDB!");
