@@ -92,6 +92,7 @@ async function run() {
              }
 
              const result= await studyPartnerCollection.updateOne(query,update);
+             res.send(result);
 
         })
 
