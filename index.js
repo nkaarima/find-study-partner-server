@@ -77,6 +77,24 @@ async function run() {
             res.send(result);
         })
 
+        //Update study Partner Count
+
+        app.put('/studyPartnerCount/:id', async(req,res) => {
+        
+             const id= req.params.id;
+             const updateCount=req.body;
+             const query= {_id: new ObjectId(id)};
+             const update={
+
+                $set:{
+                    patnerCount:updateCount.newCount
+                }
+             }
+
+             const result= await studyPartnerCollection.updateOne(query,update);
+
+        })
+
 
 
 
