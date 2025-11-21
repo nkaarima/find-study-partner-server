@@ -67,7 +67,7 @@ async function run() {
              const result= await studyPartnerCollection.findOne(query);
              res.send(result);
         })
-        
+
         
         
         //Create study partners
@@ -78,6 +78,33 @@ async function run() {
             const result = await studyPartnerCollection.insertOne(newPartner);
             res.send(result);
         })
+
+         //Retrieve all the requests
+
+         app.get('/studyPartnerRequest',async(req,res) => {
+
+            const email= req.query.email;
+
+            const query= {};
+            
+            if(email)
+            {
+                query.senderEmail= email;
+            }
+
+             const requests= sendRequestCollection.find(query).project({_id:0,studyPartnerId:1})
+             const requestArray = await requests.toArray();
+
+             const partnerId= requestArray.map(id=>  new ObjectId(id.studyPartnerId));
+
+             const cursor= studyPartnerCollection.find({_id: {$in :partnerId}}).
+                project({name:1,profileimage:1,subject:1,studyMode:1})     
+
+
+             const result= await cursor.toArray();
+             res.send(result);
+         })
+        
 
         //Create a request
 
