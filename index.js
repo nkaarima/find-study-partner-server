@@ -43,6 +43,8 @@ async function run() {
 
         const studyPartnerCollection= db.collection('study_partners');
 
+        const sendRequestCollection= db.collection('send-request');
+
         
         //Retrieve all the study partners
 
@@ -75,6 +77,18 @@ async function run() {
             const newPartner= req.body;
             const result = await studyPartnerCollection.insertOne(newPartner);
             res.send(result);
+        })
+
+        //Create a request
+
+        app.post('/studyPartnerRequest', async(req,res) => {
+
+        const newRequest= req.body;
+        const result= await sendRequestCollection.insertOne(newRequest);
+        res.send(result);
+         
+             
+
         })
 
         //Update study Partner Count
